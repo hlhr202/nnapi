@@ -7,7 +7,7 @@ use nnapi_sys::{
     ANeuralNetworksModel, ANeuralNetworksModel_addOperand, ANeuralNetworksModel_addOperation,
     ANeuralNetworksModel_create, ANeuralNetworksModel_finish, ANeuralNetworksModel_free,
     ANeuralNetworksModel_identifyInputsAndOutputs, ANeuralNetworksModel_setOperandValue,
-    OperationCode, ResultCode, ANEURALNETWORKS_FUSED_NONE,
+    FuseCode::ANEURALNETWORKS_FUSED_NONE, OperationCode, ResultCode,
 };
 
 use crate::{
@@ -45,7 +45,19 @@ impl Model {
             .into_result()
     }
 
-    // TODO:: add set operand value for buffers
+    #[inline]
+    pub fn set_operand_value<T>(&mut self, operand_idx: i32, value: &[T]) -> Result<()> {
+        let bytes = std::mem::size_of_val(value);
+        unsafe {
+            ANeuralNetworksModel_setOperandValue(
+                &mut **self,
+                operand_idx,
+                value.as_ptr() as *const _,
+                bytes,
+            )
+        }
+        .into_result()
+    }
 
     #[inline]
     pub fn set_activation_operand_value(&mut self, activation_idx: i32) -> Result<()> {
@@ -133,7 +145,7 @@ mod tests {
 
     #[test]
     fn test_compile() -> Result<()> {
-        let mut model = Model::new()?;
+        let _model = Model::new()?;
 
         Ok(())
     }

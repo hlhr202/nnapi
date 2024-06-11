@@ -1,6 +1,5 @@
 use std::{
     ffi::c_void,
-    mem::size_of,
     ops::{Deref, DerefMut},
     ptr::{null_mut, NonNull},
 };
@@ -36,11 +35,25 @@ impl Execution {
             self.set_input_raw(
                 input_list_idx,
                 input.as_ptr().cast(),
-                input.len() * size_of::<T>(),
+                std::mem::size_of_val(input),
             )
         }
     }
 
+    /// Sets the input from a raw pointer for the neural network execution.
+    ///
+    /// # Safety
+    ///
+    /// This function is unsafe because it takes a raw pointer as an argument.
+    /// The caller must ensure that the `buffer` is valid and points to a memory
+    /// region of at least `length` bytes that must remain valid for the duration
+    /// of the execution.
+    ///
+    /// The `input_list_idx` must be a valid index in the input list of the neural
+    /// network execution.
+    ///
+    /// Improper use of this function can lead to undefined behavior, so extra care
+    /// must be taken when calling it.
     #[inline]
     pub unsafe fn set_input_raw(
         &mut self,
@@ -58,11 +71,25 @@ impl Execution {
             self.set_output_raw(
                 output_list_idx,
                 output.as_mut_ptr().cast(),
-                output.len() * size_of::<T>(),
+                std::mem::size_of_val(output),
             )
         }
     }
 
+    /// Sets the output from a raw pointer for the neural network execution.
+    ///
+    /// # Safety
+    ///
+    /// This function is unsafe because it takes a raw pointer as an argument.
+    /// The caller must ensure that the `buffer` is valid and points to a memory
+    /// region of at least `length` bytes that must remain valid for the duration
+    /// of the execution.
+    ///
+    /// The `output_list_idx` must be a valid index in the output list of the neural
+    /// network execution.
+    ///
+    /// Improper use of this function can lead to undefined behavior, so extra care
+    /// must be taken when calling it.
     #[inline]
     pub unsafe fn set_output_raw(
         &mut self,

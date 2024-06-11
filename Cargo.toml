@@ -3,3 +3,5 @@ members = [
     "nnapi",
     "nnapi-sys",
 ]
+
+resolver = "2"

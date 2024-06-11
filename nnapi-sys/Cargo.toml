@@ -1,6 +1,6 @@
 [package]
 name = "nnapi-sys"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 keywords = ["android", "ndk", "ffi", "nnapi"]
 categories = ["api-bindings", "science", "algorithms", "mathematics"]
@@ -11,3 +11,19 @@ readme = "../README.md"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+num = "0.4"
+num-derive = "0.4"
+num-traits = "0.2"
+
+[build-dependencies]
+bindgen = "*"
+
+[features]
+default = ["api-level-33"]
+api-level-33 = []
+api-level-32 = []
+api-level-31 = []
+api-level-30 = []
+api-level-29 = []
+api-level-28 = []
+api-level-27 = []

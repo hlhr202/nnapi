@@ -10,7 +10,7 @@ use nnapi_sys::{
     ANeuralNetworksModel_addOperation, ANeuralNetworksModel_create, ANeuralNetworksModel_finish,
     ANeuralNetworksModel_free, ANeuralNetworksModel_identifyInputsAndOutputs,
     ANeuralNetworksModel_setOperandValue, ANeuralNetworksOperandType, OperandCode, OperationCode,
-    ANEURALNETWORKS_FUSED_NONE,
+    FuseCode::ANEURALNETWORKS_FUSED_NONE,
 };
 
 fn main() {

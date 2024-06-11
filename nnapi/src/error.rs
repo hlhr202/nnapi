@@ -1,4 +1,4 @@
-use nnapi_sys::ResultCode;
+use nnapi_sys::{FromPrimitive, ResultCode};
 
 pub type Result<T> = core::result::Result<T, ResultCode>;
 
@@ -11,7 +11,7 @@ impl IntoResult<()> for i32 {
         if self == 0 {
             Ok(())
         } else {
-            Err(ResultCode::from(self))
+            Err(ResultCode::from_i32(self).unwrap())
         }
     }
 }
