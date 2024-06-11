@@ -4,10 +4,11 @@ use nnapi_sys::{ANeuralNetworksOperandType, OperandCode};
 pub struct Operand {
     pub inner: ANeuralNetworksOperandType,
     pub len: usize,
-    pub dimensions: Vec<u32>
+    pub dimensions: Vec<u32>,
 }
 
 impl Operand {
+    #[inline]
     pub fn tensor(dtype: OperandCode, dimensions: Vec<u32>, scale: f32, zero_point: i32) -> Self {
         Operand {
             inner: ANeuralNetworksOperandType {
@@ -18,7 +19,22 @@ impl Operand {
                 zeroPoint: zero_point,
             },
             len: dimensions.iter().product::<u32>() as usize,
-            dimensions
+            dimensions,
+        }
+    }
+
+    #[inline]
+    pub fn bool() -> Self {
+        Operand {
+            inner: ANeuralNetworksOperandType {
+                type_: OperandCode::ANEURALNETWORKS_BOOL as i32,
+                dimensionCount: 0,
+                dimensions: std::ptr::null_mut(),
+                scale: 0.,
+                zeroPoint: 0,
+            },
+            len: 0,
+            dimensions: vec![],
         }
     }
 
