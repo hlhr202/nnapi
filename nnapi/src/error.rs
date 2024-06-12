@@ -11,7 +11,7 @@ impl IntoResult<()> for i32 {
         if self == 0 {
             Ok(())
         } else {
-            Err(ResultCode::from_i32(self).unwrap())
+            Err(ResultCode::from_i32(self).unwrap_or(ResultCode::ANEURALNETWORKS_NO_ERROR))
         }
     }
 }

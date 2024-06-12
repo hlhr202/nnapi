@@ -13,3 +13,7 @@ license = "Apache-2.0"
 [dependencies]
 # nnapi-sys = "0.1"
 nnapi-sys = { path = "../nnapi-sys", version = "0.1.2" }
+
+[features]
+default = ["api-level-33"]
+api-level-33 = ["nnapi-sys/api-level-33"]

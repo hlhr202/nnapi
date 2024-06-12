@@ -24,7 +24,7 @@ impl Operand {
     }
 
     #[inline]
-    pub fn bool() -> Self {
+    pub fn bool_scalar() -> Self {
         Operand {
             inner: ANeuralNetworksOperandType {
                 type_: OperandCode::ANEURALNETWORKS_BOOL as i32,
