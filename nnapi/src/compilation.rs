@@ -5,10 +5,11 @@ use std::{
 
 use nnapi_sys::{
     ANeuralNetworksCompilation, ANeuralNetworksCompilation_create,
-    ANeuralNetworksCompilation_finish, ANeuralNetworksCompilation_free, ResultCode,
+    ANeuralNetworksCompilation_createForDevices, ANeuralNetworksCompilation_finish,
+    ANeuralNetworksCompilation_free, ResultCode,
 };
 
-use crate::{Execution, IntoResult, Model};
+use crate::{Device, Execution, IntoResult, Model};
 
 pub struct Compilation {
     inner: NonNull<ANeuralNetworksCompilation>,
@@ -19,6 +20,29 @@ impl Compilation {
         let mut compilation = null_mut();
         unsafe { ANeuralNetworksCompilation_create(&mut **model, &mut compilation) }
             .into_result()?;
+
+        Ok(Compilation {
+            inner: NonNull::new(compilation).ok_or(ResultCode::ANEURALNETWORKS_UNEXPECTED_NULL)?,
+        })
+    }
+
+    pub fn create_for_devices(model: &mut Model, devices: Vec<Device>) -> crate::Result<Self> {
+        let mut compilation = null_mut();
+        let num_device = devices.len() as u32;
+        let devices = devices
+            .iter()
+            .map(|device| device._inner)
+            .collect::<Vec<_>>();
+
+        unsafe {
+            ANeuralNetworksCompilation_createForDevices(
+                &mut **model,
+                devices.as_ptr(),
+                num_device,
+                &mut compilation,
+            )
+        }
+        .into_result()?;
 
         Ok(Compilation {
             inner: NonNull::new(compilation).ok_or(ResultCode::ANEURALNETWORKS_UNEXPECTED_NULL)?,

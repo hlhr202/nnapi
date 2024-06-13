@@ -115,6 +115,11 @@ impl Model {
     pub fn compile(&mut self) -> Result<Compilation> {
         Compilation::new(self)
     }
+
+    #[inline]
+    pub fn compile_for_devices(&mut self, devices: Vec<crate::Device>) -> Result<Compilation> {
+        Compilation::create_for_devices(self, devices)
+    }
 }
 
 impl Deref for Model {

@@ -7,6 +7,7 @@ mod event;
 mod execution;
 mod model;
 mod operand;
+mod device;
 
 pub use burst::*;
 pub use compilation::*;
@@ -15,6 +16,7 @@ pub use event::*;
 pub use execution::*;
 pub use model::*;
 pub use operand::*;
+pub use device::*;
 pub mod nnapi_sys {
     pub use ::nnapi_sys::*;
 }
